@@ -3,7 +3,7 @@ frameworkVersion: '2'
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs18.x
   stage: dev
   region: us-east-2
   enpointType: EDGE
@@ -37,8 +37,12 @@ plugins:
   - serverless-plugin-optimize
   - serverless-offline
   - serverless-deployment-bucket
+  - serverless-jest-plugin
 
 custom:
+  jest:
+    verbose: true
+    collectCoverage: true 
   deploymentBucket:
     versioning: true
     accelerate: true
