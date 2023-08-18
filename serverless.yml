@@ -1,0 +1,48 @@
+service: lambda-boilerplate
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  region: us-east-2
+  enpointType: EDGE
+  lambdaHashingVersion: '20201221'
+  deploymentBucket:
+    name: your-custom-deployment-bucket
+  apiGateway:
+    resourcePolicy:
+      - Effect: Allow
+        Principal: '*'
+        Action: execute-api:Invoke
+        Resource:
+          - execute-api:/*/*/*
+
+functions:
+  api:
+    handler: src/index.handler
+    events:
+      - http:
+          path: test/endpoint@1.0
+          method: post
+  create_order:
+    handler: src/index.ordersHandler
+    events:
+      - http:
+          path: api/v1/orders
+          method: post
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-plugin-optimize
+  - serverless-offline
+  - serverless-deployment-bucket
+
+custom:
+  deploymentBucket:
+    versioning: true
+    accelerate: true
+    blockPublicAccess: true
+    tags:
+      - Key: Environment
+        Value: production
