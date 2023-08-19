@@ -4,6 +4,7 @@ import cors from "@middy/http-cors";
 import httpErrorHandler from "@middy/http-error-handler";
 import jsonBodyParser from "@middy/http-json-body-parser";
 import httpSecurityHeaders from "@middy/http-security-headers";
+import "reflect-metadata";
 
 import { BaseHandler, OrdersHandler } from "./endpoints";
 
