@@ -1,13 +1,11 @@
 require("dotenv").config();
-import { v4 as uuidv4 } from "uuid";
 
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import { v4 as uuidv4 } from "uuid";
+import { APIGatewayProxyResult } from "aws-lambda";
 import SQSUtils from "../../utils/sqs";
 
 export default class OrdersHandler {
-  public static async createOrder(
-    event: APIGatewayProxyEvent
-  ): Promise<APIGatewayProxyResult> {
+  public static async createOrder(): Promise<APIGatewayProxyResult> {
     const response = {
       result: "success",
       message: "Order generated successfully",
@@ -37,9 +35,7 @@ export default class OrdersHandler {
     };
   }
 
-  public static async listOrdersHandler(
-    event: APIGatewayProxyEvent
-  ): Promise<APIGatewayProxyResult> {
+  public static async listOrdersHandler(): Promise<APIGatewayProxyResult> {
     const response = {
       result: "success",
       message: [],
@@ -51,9 +47,7 @@ export default class OrdersHandler {
     };
   }
 
-  public static async listCurrentOrdersHandler(
-    event: APIGatewayProxyEvent
-  ): Promise<APIGatewayProxyResult> {
+  public static async listCurrentOrdersHandler(): Promise<APIGatewayProxyResult> {
     const response = {
       result: "success",
       message: [],

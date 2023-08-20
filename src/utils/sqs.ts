@@ -12,7 +12,7 @@ export default class SQSUtils {
     queueUrl: string,
     messageBody: string,
     MessageGroupId: string,
-    metadata?: any
+    metadata?: any,
   ): Promise<any> {
     const sqsClient = SQSUtils._sqsClient();
 

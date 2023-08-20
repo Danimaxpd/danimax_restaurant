@@ -1,13 +1,7 @@
-import {
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
-  SQSEvent,
-} from "aws-lambda";
+import { APIGatewayProxyResult } from "aws-lambda";
 
 export default class WarehouseHandler {
-  public static async getIngredients(
-    event: SQSEvent
-  ): Promise<APIGatewayProxyResult> {
+  public static async getIngredients(): Promise<APIGatewayProxyResult> {
     const response = {
       result: "success",
       message: "",
@@ -19,9 +13,7 @@ export default class WarehouseHandler {
     };
   }
 
-  public static async listOrders(
-    event: APIGatewayProxyEvent
-  ): Promise<APIGatewayProxyResult> {
+  public static async listOrders(): Promise<APIGatewayProxyResult> {
     const response = {
       result: "success",
       message: [],

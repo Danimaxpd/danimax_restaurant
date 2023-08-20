@@ -1,4 +1,4 @@
-service: lambda-boilerplate
+service: restaurant_microservices
 frameworkVersion: '3'
 
 provider:
@@ -19,7 +19,7 @@ provider:
           - execute-api:/*/*/*
 
 functions:
-  api:
+  kitchen:
     handler: dist/index.orders_Handler
     environment:
       WAREHOUSE_QUEUE_URL: ${construct:warehouse.queueUrl}
