@@ -1,27 +1,23 @@
 require("dotenv").config();
+import { v4 as uuidv4 } from "uuid";
 
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import SQSUtils from "../../utils/sqs";
 
 export default class OrdersHandler {
   public static async createOrder(
-    event: APIGatewayProxyEvent,
-    context,
-    { signal }
+    event: APIGatewayProxyEvent
   ): Promise<APIGatewayProxyResult> {
     const response = {
       result: "success",
-      message: "",
+      message: "Order generated successfully",
     };
-    console.debug(process.env);
-    console.debug(process.env.WAREHOUSE_QUEUE_URL);
-    console.log("QUEUE URL: ", process.env.WAREHOUSE_QUEUE_URL);
     SQSUtils.sendMessage(
       process.env.WAREHOUSE_QUEUE_URL,
       JSON.stringify({
         MessageGroupId: "warehouse",
-        MessageDeduplicationId: "warehouse",
-        MessageBody: "warehouse aaaa",
+        MessageDeduplicationId: uuidv4(),
+        MessageBody: `${new Date().toISOString()} - warehouse_order}`,
       }),
       "warehouse",
       {
@@ -36,7 +32,7 @@ export default class OrdersHandler {
       }
     );
     return {
-      statusCode: 200,
+      statusCode: 201,
       body: JSON.stringify(response),
     };
   }

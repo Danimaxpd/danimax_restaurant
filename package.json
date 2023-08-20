@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "deploy": "npm run build && serverless deploy",
+    "deploy:offline": "npm run build && serverless offline",
     "build": "ncc build src/index.ts",
     "docs": "typedoc",
     "pretest": "npm run build",
@@ -33,13 +35,14 @@
     "serverless-offline": "^8.2.0",
     "serverless-vercel-ncc": "^0.0.7",
     "typedoc": "^0.22.8",
-    "typeorm": "^0.3.17"
+    "typeorm": "^0.3.17",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "dotenv": "^16.3.1",
     "@types/aws-lambda": "^8.10.85",
     "@types/jest": "^27.0.2",
     "@types/node": "^20.5.1",
+    "dotenv": "^16.3.1",
     "jest": "^27.3.1",
     "serverless-deployment-bucket": "^1.5.1",
     "serverless-jest-plugin": "^0.4.0",
