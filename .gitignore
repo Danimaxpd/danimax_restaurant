@@ -1,9 +1,17 @@
+# Build files
 node_modules
 .serverless
 .idea
 .build
 build
-*.zip
 *aws
 *dist
+
+# Files
+*.zip
+
+#IDE
+*.vscode
+
+# Environment
 .env
