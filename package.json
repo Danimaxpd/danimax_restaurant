@@ -35,7 +35,6 @@
     "serverless-offline": "^8.2.0",
     "serverless-vercel-ncc": "^0.0.7",
     "typedoc": "^0.22.8",
-    "typeorm": "^0.3.17",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
