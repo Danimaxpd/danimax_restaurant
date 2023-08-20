@@ -27,7 +27,7 @@ export default class OrdersHandler {
           DataType: "String",
           StringValue: "kitchen",
         },
-      }
+      },
     );
     return {
       statusCode: 201,
