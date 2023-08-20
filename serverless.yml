@@ -1,9 +1,8 @@
-service: restaurant_microservices
+service: restaurantMicroservices
 frameworkVersion: '3'
 
 provider:
   name: aws
-  useDotenv: true
   runtime: nodejs16.x
   stage: dev
   region: us-east-1
@@ -19,17 +18,29 @@ provider:
           - execute-api:/*/*/*
 
 functions:
-  kitchen:
-    handler: dist/index.orders_Handler
+  kitchenOrders:
+    handler: dist/index.ordersHandler
     environment:
       WAREHOUSE_QUEUE_URL: ${construct:warehouse.queueUrl}
     events:
       - http:
           path: v1/orders
           method: post
+  kitchenListOrders:  
+    handler: dist/index.listOrdersHandler
+    events:
+      - http:
+          path: v1/orders
+          method: get
+  kitchenListCurrentOrders:  
+    handler: dist/index.listCurrentOrdersHandler
+    events:
+      - http:
+          path: v1/orders/current
+          method: get
 
 constructs:
-  kitchen-delivery:
+  kitchenDelivery:
       type: queue
       fifo: true
       Properties:
