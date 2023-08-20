@@ -1,23 +1,42 @@
 const middy = require("@middy/core");
 
+import "reflect-metadata";
 import cors from "@middy/http-cors";
 import httpErrorHandler from "@middy/http-error-handler";
 import jsonBodyParser from "@middy/http-json-body-parser";
 import httpSecurityHeaders from "@middy/http-security-headers";
-import "reflect-metadata";
 
-import { BaseHandler, OrdersHandler } from "./endpoints";
+import { WarehouseHandler, OrdersHandler } from "./endpoints";
 
-const handler = middy(BaseHandler.baseHandler)
+// warehouse functions handlers
+const handler = middy(WarehouseHandler.getIngredients)
   .use(cors())
   .use(httpSecurityHeaders())
   .use(jsonBodyParser())
   .use(httpErrorHandler());
 
-const ordersHandler = middy(OrdersHandler.createOrder)
+// Kitchen functions handlers
+const orders_Handler = middy(OrdersHandler.createOrder)
   .use(cors())
   .use(httpSecurityHeaders())
   .use(jsonBodyParser())
   .use(httpErrorHandler());
 
-module.exports = { handler, ordersHandler };
+const list_orders_Handler = middy(OrdersHandler.listOrdersHandler)
+  .use(cors())
+  .use(httpSecurityHeaders())
+  .use(jsonBodyParser())
+  .use(httpErrorHandler());
+
+const list_Current_ordersHandler = middy(OrdersHandler.listCurrentOrdersHandler)
+  .use(cors())
+  .use(httpSecurityHeaders())
+  .use(jsonBodyParser())
+  .use(httpErrorHandler());
+
+module.exports = {
+  handler,
+  orders_Handler,
+  list_orders_Handler,
+  list_Current_ordersHandler,
+};

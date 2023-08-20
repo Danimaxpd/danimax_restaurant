@@ -1,15 +1,15 @@
 service: lambda-boilerplate
-frameworkVersion: '2'
+frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: nodejs18.x
+  useDotenv: true
+  runtime: nodejs16.x
   stage: dev
-  region: us-east-2
-  enpointType: EDGE
-  lambdaHashingVersion: '20201221'
+  region: us-east-1
+  endpointType: EDGE
   deploymentBucket:
-    name: your-custom-deployment-bucket
+    name: danimaxrestaurantlambda
   apiGateway:
     resourcePolicy:
       - Effect: Allow
@@ -20,27 +20,37 @@ provider:
 
 functions:
   api:
-    handler: src/index.handler
+    handler: dist/index.orders_Handler
+    environment:
+      WAREHOUSE_QUEUE_URL: ${construct:warehouse.queueUrl}
     events:
       - http:
-          path: test/endpoint@1.0
-          method: post
-  create_order:
-    handler: src/index.ordersHandler
-    events:
-      - http:
-          path: api/v1/orders
+          path: v1/orders
           method: post
 
+constructs:
+  kitchen-delivery:
+      type: queue
+      fifo: true
+      Properties:
+        ContentBasedDeduplication: false
+      worker:
+          handler: dist/index.ordersHandler
+  warehouse:
+      type: queue
+      fifo: true
+      Properties:
+          ContentBasedDeduplication: false
+      worker:
+          handler: dist/index.ordersHandler
+
 plugins:
-  - serverless-plugin-typescript
-  - serverless-plugin-optimize
   - serverless-offline
   - serverless-deployment-bucket
   - serverless-jest-plugin
+  - serverless-lift
 
 custom:
-  useDotenv: true
   jest:
     verbose: true
     collectCoverage: true 
@@ -51,3 +61,13 @@ custom:
     tags:
       - Key: Environment
         Value: production
+  ncc:
+    concurrency: 3 # Quantity of files being compiled at the same time
+    excludeDependencies: false # Exclude all the dependencies of package.json
+    minify: true # @vercel/ncc option
+    sourceMap: false # @vercel/ncc option
+    sourceMapRegister: true # @vercel/ncc option
+
+package:
+  exclude:
+    - node_modules/**
