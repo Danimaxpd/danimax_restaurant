@@ -16,6 +16,7 @@ export default class SQSUtils {
     queueUrl: string,
     messageBody: string,
     MessageGroupId: string,
+    MessageDeduplicationId: string,
     metadata?: any,
   ): Promise<any> {
     const sqsClient = SQSUtils._sqsClient();
@@ -25,6 +26,7 @@ export default class SQSUtils {
       MessageAttributes: metadata,
       MessageBody: messageBody,
       MessageGroupId,
+      MessageDeduplicationId,
     });
 
     return sqsClient.send(command);

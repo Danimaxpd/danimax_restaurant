@@ -1,5 +1,3 @@
-// src/mongo.ts
-
 import { MongoClient, Db } from "mongodb";
 
 let db: Db | null = null;
