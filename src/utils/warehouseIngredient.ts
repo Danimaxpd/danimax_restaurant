@@ -5,6 +5,8 @@ import { Warehouse } from "../interfaces";
 import { ObjectId } from "mongodb";
 import axios from "axios";
 
+const MAX_RETRIES = 3;
+
 export const getInventory = async () => {
   const db = await connectToDB(process.env.MONGODB_URI);
 
@@ -39,19 +41,6 @@ export const updateInventory = async (orderId: ObjectId, quantity: number) => {
 
   return warehouseInventory;
 };
-
-export const buyIngredients = async (
-  ingredientName,
-  ingredientQty,
-  warehouseItemQuantity,
-) => {
-  return axios.post("https://recruitment.alegra.com/api/farmers-market/buy", {
-    ingredient: ingredientName,
-    quantity: ingredientQty - warehouseItemQuantity,
-  });
-};
-
-const MAX_RETRIES = 3;
 
 /**
  * Sleep for n milliseconds
