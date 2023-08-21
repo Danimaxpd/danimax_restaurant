@@ -6,11 +6,12 @@ import {
   Context,
   APIGatewayProxyEvent,
 } from "aws-lambda";
+import { ObjectId } from "mongodb";
+
 import SQSUtils from "../../utils/sqs";
 import { connectToDB } from "../../utils/mongo";
-import { getRandomRecipe } from "src/utils/randomRecipe";
-import { Order } from "src/interfaces";
-import { ObjectId } from "mongodb";
+import { getRandomRecipe } from "../../utils/randomRecipe";
+import { Order } from "../../interfaces";
 
 export default class OrdersHandler {
   public static async cookOrder(context: Context) {

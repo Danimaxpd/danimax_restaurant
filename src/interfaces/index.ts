@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 export interface Ingredient {
   name: string;
   qty: number;
@@ -6,12 +8,7 @@ export interface Ingredient {
 export interface Order {
   recipeName: string;
   ingredients: Ingredient[];
-  status:
-    | "new-order"
-    | "in-preparation"
-    | "waiting-for-ingredients"
-    | "ready-for-kitchen"
-    | "done";
+  status: "new-order" | "ready-for-kitchen" | "in-preparation" | "done";
   createDate: Date;
   updateDate: Date;
 }
@@ -22,6 +19,7 @@ export interface Recipe {
 }
 
 export interface Warehouse {
+  _id?: ObjectId; // MongoDB ObjectId
   quantity: number;
   ingredient: string;
 }
