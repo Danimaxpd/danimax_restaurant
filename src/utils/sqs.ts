@@ -1,4 +1,8 @@
-import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
+import {
+  SendMessageCommand,
+  SQSClient,
+  ReceiveMessageCommand,
+} from "@aws-sdk/client-sqs";
 
 export default class SQSUtils {
   private static _sqsClient() {
@@ -21,6 +25,16 @@ export default class SQSUtils {
       MessageAttributes: metadata,
       MessageBody: messageBody,
       MessageGroupId,
+    });
+
+    return sqsClient.send(command);
+  }
+
+  public static async receiveMessage(queueUrl: string): Promise<any> {
+    const sqsClient = SQSUtils._sqsClient();
+
+    const command = new ReceiveMessageCommand({
+      QueueUrl: queueUrl,
     });
 
     return sqsClient.send(command);

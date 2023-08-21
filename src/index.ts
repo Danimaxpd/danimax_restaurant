@@ -22,6 +22,12 @@ const ordersHandler = middy(OrdersHandler.createOrder)
   .use(jsonBodyParser())
   .use(httpErrorHandler());
 
+const cookOrderHandler = middy(OrdersHandler.cookOrder)
+  .use(cors())
+  .use(httpSecurityHeaders())
+  .use(jsonBodyParser())
+  .use(httpErrorHandler());
+
 const listOrdersHandler = middy(OrdersHandler.listOrdersHandler)
   .use(cors())
   .use(httpSecurityHeaders())
@@ -37,6 +43,7 @@ const listCurrentOrdersHandler = middy(OrdersHandler.listCurrentOrdersHandler)
 module.exports = {
   getIngredientsHandler,
   ordersHandler,
+  cookOrderHandler,
   listOrdersHandler,
   listCurrentOrdersHandler,
 };
