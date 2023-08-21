@@ -26,6 +26,14 @@ functions:
       - http:
           path: v1/orders
           method: post
+  kitchenCookOrders:
+    handler: dist/index.cookOrderHandler
+    environment:
+      WAREHOUSE_QUEUE_URL: ${construct:kitchenDelivery.queueUrl}
+    events:
+      - http:
+          path: v1/cook_orders
+          method: post
   kitchenListOrders:  
     handler: dist/index.listOrdersHandler
     events:
@@ -43,17 +51,30 @@ constructs:
   kitchenDelivery:
       type: queue
       fifo: true
-      Properties:
-        ContentBasedDeduplication: false
+      extensions:
+            queue:
+                Properties:
+                    ContentBasedDeduplication: false
       worker:
           handler: dist/index.ordersHandler
+  kitchenCook:
+      type: queue
+      fifo: true
+      extensions:
+            queue:
+                Properties:
+                    ContentBasedDeduplication: false
+      worker:
+          handler: dist/index.cookOrderHandler
   warehouse:
       type: queue
       fifo: true
-      Properties:
-          ContentBasedDeduplication: false
+      extensions:
+            queue:
+                Properties:
+                    ContentBasedDeduplication: false
       worker:
-          handler: dist/index.ordersHandler
+          handler: dist/index.getIngredientsHandler
 
 plugins:
   - serverless-offline
