@@ -24,6 +24,8 @@ functions:
       WAREHOUSE_QUEUE_URL: ${construct:warehouse.queueUrl}
     events:
       - http:
+          cors:
+            origin: '*'
           path: v1/orders
           method: post
   kitchenReProcessOrder:
@@ -32,18 +34,24 @@ functions:
       WAREHOUSE_QUEUE_URL: ${construct:warehouse.queueUrl}
     events:
       - http:
+          cors:
+            origin: '*'
           path: v1/re_process_order
           method: post
   kitchenListOrders:  
     handler: dist/index.listOrdersHandler
     events:
       - http:
+          cors:
+            origin: '*'
           path: v1/orders
           method: get
   kitchenListCurrentOrders:  
     handler: dist/index.listCurrentOrdersHandler
     events:
       - http:
+          cors:
+            origin: '*'
           path: v1/orders/current
           method: get
 
