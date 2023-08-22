@@ -29,7 +29,6 @@ functions:
   kitchenCookOrders:
     handler: dist/index.cookOrderHandler
     environment:
-      KITCHEN_QUEUE_URL: ${construct:kitchenDelivery.queueUrl}
       KITCHEN_COOK_QUEUE_URL: ${construct:kitchenCook.queueUrl}
     events:
       - http:
@@ -51,7 +50,6 @@ functions:
     handler: dist/index.getIngredientsHandler
     environment:
       WAREHOUSE_QUEUE_URL: ${construct:warehouse.queueUrl}
-      KITCHEN_QUEUE_URL: ${construct:kitchenDelivery.queueUrl}
       KITCHEN_COOK_QUEUE_URL: ${construct:kitchenCook.queueUrl}
     events:
       - http:
@@ -59,31 +57,12 @@ functions:
           method: get
 
 constructs:
-  kitchenDelivery:
-      type: queue
-      fifo: true
-      extensions:
-            queue:
-                Properties:
-                    ContentBasedDeduplication: false
-      worker:
-          handler: dist/index.ordersHandler
   kitchenCook:
       type: queue
-      fifo: true
-      extensions:
-            queue:
-                Properties:
-                    ContentBasedDeduplication: false
       worker:
           handler: dist/index.cookOrderHandler
   warehouse:
       type: queue
-      fifo: true
-      extensions:
-            queue:
-                Properties:
-                    ContentBasedDeduplication: false
       worker:
           handler: dist/index.getIngredientsHandler
 
