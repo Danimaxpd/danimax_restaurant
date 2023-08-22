@@ -11,7 +11,7 @@ import { ObjectId, Db } from "mongodb";
 import SQSUtils from "../../utils/sqs";
 import { connectToDB } from "../../utils/mongo";
 import { getRandomRecipe } from "../../utils/randomRecipe";
-import { Order } from "../../interfaces";
+import { Order, Recipe } from "../../interfaces";
 import { generateSHA256 } from "../../utils/strings";
 
 export default class OrdersHandler {
@@ -97,7 +97,8 @@ export default class OrdersHandler {
       }
 
       console.log("Messages", Messages);
-      const orderId = 1;
+      let order: Recipe = JSON.parse(Messages[0].body);
+      const orderId = order._id;
       const result = await db.collection("orders").updateOne(
         { _id: new ObjectId(orderId) },
         {
@@ -164,7 +165,7 @@ export default class OrdersHandler {
 
       const skip = (page - 1) * pageSize;
       const filter = {
-        status: { $ne: "done" }, // Not equal to "done"
+        status: { $nin: ["done", "new-order"] }, // not in done or new-order
       };
 
       const results = await db
