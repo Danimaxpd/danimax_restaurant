@@ -1,11 +1,15 @@
 require("dotenv").config();
 
+import querystring from "node:querystring";
 import { connectToDB } from "./mongo";
 import { Warehouse } from "../interfaces";
 import { ObjectId } from "mongodb";
 import axios from "axios";
 
-const MAX_RETRIES = 3;
+const MAX_RETRIES = 5;
+const buyIngredientsUrl =
+  process.env.APP_BUY_INGREDIENTS ||
+  "https://recruitment.alegra.com/api/farmers-market/buy";
 
 export const getInventory = async () => {
   const db = await connectToDB(process.env.MONGODB_URI);
@@ -56,20 +60,25 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export async function fetchIngredientWithRetry(
   ingredientName: string,
   quantity: number,
-  warehouseItemQuantity: number,
-) {
-  let retries = 0;
-  let error;
+): Promise<number> {
+  let retries: number = 0;
+  let error: Error | null = null;
+  let purchasedIngredient: number = 0;
+  const requestQuery = querystring.stringify({ ingredient: ingredientName });
+  const url = `${buyIngredientsUrl}?` + requestQuery;
+
+  console.info("fetchIngredientWithRetry url", url);
 
   while (retries < MAX_RETRIES) {
     try {
-      const response = await axios.post(process.env.APP_BUY_INGREDIENTS, {
-        ingredient: ingredientName,
-        quantity: quantity - warehouseItemQuantity,
-      });
+      const response = await axios.get(url);
 
       if (response.data.quantitySold > 0) {
-        return response.data;
+        purchasedIngredient += response.data.quantitySold;
+      }
+
+      if (purchasedIngredient >= quantity) {
+        return purchasedIngredient;
       }
     } catch (err) {
       error = err;

@@ -1,23 +1,88 @@
 require("dotenv").config();
 
 import { v4 as uuidv4 } from "uuid";
-import {
-  APIGatewayProxyResult,
-  Context,
-  APIGatewayProxyEvent,
-} from "aws-lambda";
-import { ObjectId } from "mongodb";
+import { APIGatewayProxyResult, APIGatewayProxyEvent } from "aws-lambda";
+import { ObjectId, Db } from "mongodb";
 
 import SQSUtils from "../../utils/sqs";
 import { connectToDB } from "../../utils/mongo";
 import { getRandomRecipe } from "../../utils/randomRecipe";
 import { Order } from "../../interfaces";
+import { generateSHA256 } from "../../utils/strings";
 
 export default class OrdersHandler {
-  public static async cookOrder(context: Context) {
-    // wait for the event loop to be empty before ending the lambda function
-    context.callbackWaitsForEmptyEventLoop = false;
-    const db = await connectToDB(process.env.DB_URL);
+  private static async connectDB(): Promise<Db> {
+    console.info("Connecting to DB...");
+    return connectToDB(process.env.DB_URL);
+  }
+
+  private static async createNewOrderInDB(
+    db: Db,
+    randomRecipeData: any,
+  ): Promise<any> {
+    const recipeData = {
+      ...randomRecipeData,
+      status: "new-order",
+      uuid: uuidv4(),
+      createDate: new Date(),
+      updateDate: new Date(),
+    };
+
+    console.info("Inserting order into DB...");
+    return db.collection("orders").insertOne(recipeData);
+  }
+
+  private static async sendOrderToSQS(order: any) {
+    console.info("Sending message to SQS...");
+    await SQSUtils.sendMessage(
+      process.env.WAREHOUSE_QUEUE_URL,
+      JSON.stringify(order),
+      "warehouse",
+      generateSHA256(uuidv4()),
+      {
+        Title: {
+          DataType: "String",
+          StringValue: "warehouse_order",
+        },
+        Author: {
+          DataType: "String",
+          StringValue: "kitchen",
+        },
+      },
+    );
+  }
+
+  public static async createOrder(): Promise<APIGatewayProxyResult> {
+    try {
+      const db = await OrdersHandler.connectDB();
+      const randomRecipeData = await getRandomRecipe();
+      const order = await OrdersHandler.createNewOrderInDB(
+        db,
+        randomRecipeData,
+      );
+      console.log("Create order: order:", order);
+      await OrdersHandler.sendOrderToSQS(order);
+
+      const response = {
+        result: "success",
+        message: order,
+      };
+
+      return {
+        statusCode: 201,
+        body: JSON.stringify(response),
+      };
+    } catch (error) {
+      console.error("Error in createOrder:", error);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ message: "Internal Server Error" }), // It's usually not a good practice to send raw error messages to the client. Use a generic message instead.
+      };
+    }
+  }
+
+  public static async cookOrder() {
+    const db = await OrdersHandler.connectDB();
 
     try {
       const { Messages } = await SQSUtils.receiveMessage(
@@ -59,65 +124,10 @@ export default class OrdersHandler {
     }
   }
 
-  public static async createOrder(
-    context: Context,
-  ): Promise<APIGatewayProxyResult> {
-    // wait for the event loop to be empty before ending the lambda function
-    context.callbackWaitsForEmptyEventLoop = false;
-    const db = await connectToDB(process.env.DB_URL);
-
-    try {
-      const randomRecipeData = await getRandomRecipe();
-      const recipeData = {
-        ...randomRecipeData,
-        status: "new-order",
-        createDate: new Date(),
-        updateDate: new Date(),
-      };
-      const order = await db.collection("orders").insertOne(recipeData);
-      const response = {
-        result: "success",
-        message: order,
-      };
-
-      SQSUtils.sendMessage(
-        process.env.WAREHOUSE_QUEUE_URL,
-        JSON.stringify({
-          MessageGroupId: "warehouse",
-          MessageDeduplicationId: uuidv4(),
-          MessageBody: JSON.stringify(order),
-        }),
-        "warehouse",
-        {
-          Title: {
-            DataType: "String",
-            StringValue: "warehouse_order",
-          },
-          Author: {
-            DataType: "String",
-            StringValue: "kitchen",
-          },
-        },
-      );
-      return {
-        statusCode: 201,
-        body: JSON.stringify(response),
-      };
-    } catch (error) {
-      return {
-        statusCode: 500,
-        body: error.message,
-      };
-    }
-  }
-
   public static async listOrdersHandler(
     event: APIGatewayProxyEvent,
-    context: Context,
   ): Promise<APIGatewayProxyResult> {
-    // wait for the event loop to be empty before ending the lambda function
-    context.callbackWaitsForEmptyEventLoop = false;
-    const db = await connectToDB(process.env.DB_URL);
+    const db = await OrdersHandler.connectDB();
     try {
       const page = parseInt(event.queryStringParameters?.page, 10) | 1;
       const pageSize = parseInt(event.queryStringParameters?.page, 10) | 10;
@@ -150,11 +160,8 @@ export default class OrdersHandler {
 
   public static async listCurrentOrdersHandler(
     event: APIGatewayProxyEvent,
-    context: Context,
   ): Promise<APIGatewayProxyResult> {
-    // wait for the event loop to be empty before ending the lambda function
-    context.callbackWaitsForEmptyEventLoop = false;
-    const db = await connectToDB(process.env.DB_URL);
+    const db = await OrdersHandler.connectDB();
     try {
       const page = parseInt(event.queryStringParameters?.page, 10) | 1;
       const pageSize = parseInt(event.queryStringParameters?.page, 10) | 10;

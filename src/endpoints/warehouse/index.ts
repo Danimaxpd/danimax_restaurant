@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 import { v4 as uuidv4 } from "uuid";
 import { APIGatewayProxyResult } from "aws-lambda";
 import SQSUtils from "../../utils/sqs";
@@ -9,104 +7,98 @@ import {
   getInventory,
   updateInventory,
 } from "../../utils/warehouseIngredient";
+import { generateSHA256 } from "../../utils/strings";
 
 export default class WarehouseHandler {
   public static async getIngredients(): Promise<APIGatewayProxyResult> {
-    // getInventory()
-    // base on the request try to complete the recipe and discount the inventory from the warehouse
-    // if the inventory is not enough, get new items from https://recruitment.alegra.com/api/farmers-market/buy body {ingredient: quantity} the response is quanitySold if the value is more thant 0 means is sucessfully but if is zero means is not available so you need implement a retry logic
-    // if the inventory is enough, update the inventory and send a message to the kitchen queue
     try {
-      // From sqs queue
+      await SQSUtils.sendMessage(
+        process.env.WAREHOUSE_QUEUE_URL,
+        JSON.stringify("jajajajajajaj"),
+        "warehouse",
+        generateSHA256(uuidv4()),
+        {
+          Title: {
+            DataType: "String",
+            StringValue: "warehouse_order",
+          },
+          Author: {
+            DataType: "String",
+            StringValue: "kitchen",
+          },
+        },
+      );
       const { Messages } = await SQSUtils.receiveMessage(
         process.env.WAREHOUSE_QUEUE_URL,
       );
 
+      console.debug(Messages);
+
       if (!Messages) {
-        throw new Error("No messages in the queue");
+        console.warn("No messages in the queue");
+        return {
+          statusCode: 204,
+          body: "No messages in the queue",
+        };
       }
 
-      console.log("Messages getIngredients", Messages);
-
-      const response = {
-        result: "success",
-        message: "",
-      };
-
-      // Get current inventory
-      const currentInventory = await getInventory();
+      console.info("Received Messages:", Messages);
 
       // Assuming the order details are passed from the sqs
-      let order: Order = {
-        recipeName: "xdd",
-        ingredients: [
-          {
-            name: "apple",
-            qty: 1,
-          },
-          {
-            name: "banana",
-            qty: 1,
-          },
-        ],
-        status: "new-order",
-        createDate: new Date(),
-        updateDate: new Date(),
-      };
-      const ingredientsNeeded = order.ingredients;
+      let order: Order = JSON.parse(Messages[0].Body);
 
-      // Check if there's enough inventory for each ingredient
-      for (let ingredient of ingredientsNeeded) {
+      // Validate order structure before proceeding (can be improved further)
+      if (!order || !order.ingredients) {
+        throw new Error("Invalid order format in the message");
+      }
+
+      const currentInventory = await getInventory();
+
+      const inventoryUpdates = [];
+
+      for (let ingredient of order.ingredients) {
         const warehouseItem = currentInventory.find(
           (item) => item.ingredient === ingredient.name,
         );
 
-        if (warehouseItem?.quantity < ingredient.qty) {
-          // If not enough, try to buy from API
-          const data = await fetchIngredientWithRetry(
-            ingredient.name,
-            ingredient.qty,
-            warehouseItem?.quantity,
+        if (!warehouseItem) {
+          throw new Error(
+            `Ingredient ${ingredient.name} not found in inventory`,
           );
+        }
 
-          // Update inventory with bought items
-          await updateInventory(
-            warehouseItem._id,
-            warehouseItem.quantity + data.quantitySold,
+        if (warehouseItem.quantity < ingredient.qty) {
+          const amountNeeded = ingredient.qty - warehouseItem.quantity;
+          const purchasedAmount = await fetchIngredientWithRetry(
+            ingredient.name,
+            amountNeeded,
           );
+          inventoryUpdates.push({
+            _id: warehouseItem._id,
+            quantity: warehouseItem.quantity + purchasedAmount,
+          });
         } else {
-          // Deduct from inventory if there's enough
-          await updateInventory(
-            warehouseItem._id,
-            warehouseItem.quantity - ingredient.qty,
-          );
+          inventoryUpdates.push({
+            _id: warehouseItem._id,
+            quantity: warehouseItem.quantity - ingredient.qty,
+          });
         }
       }
 
-      order = {
-        recipeName: "xdd",
-        ingredients: [
-          {
-            name: "apple",
-            qty: 1,
-          },
-          {
-            name: "banana",
-            qty: 1,
-          },
-        ],
-        status: "ready-for-kitchen",
-        createDate: new Date(),
-        updateDate: new Date(),
-      };
-      // Send message to kitchen queue (not implemented in this example, but you can use AWS SQS or another messaging system)
-      SQSUtils.sendMessage(
-        process.env.KITCHEN_QUEUE_URL, // KITCHEN_COOK_QUEUE_URL
+      for (let index = 0; index < inventoryUpdates.length; index++) {
+        const element = inventoryUpdates[index];
+        await updateInventory(element._id, element.quantity);
+      }
+      order.status = "ready-for-kitchen";
+      order.updateDate = new Date();
+
+      await SQSUtils.sendMessage(
+        process.env.KITCHEN_COOK_QUEUE_URL,
         JSON.stringify({
           MessageGroupId: "kitchen",
-          MessageDeduplicationId: uuidv4(),
           MessageBody: JSON.stringify(order),
         }),
+        generateSHA256(uuidv4()),
         "kitchen",
         {
           Title: {
@@ -119,27 +111,17 @@ export default class WarehouseHandler {
           },
         },
       );
+
       return {
         statusCode: 200,
-        body: JSON.stringify(response),
+        body: JSON.stringify({ result: "success" }),
       };
     } catch (error) {
+      console.error("Error in getIngredients:", error);
       return {
         statusCode: 500,
-        body: error.message,
+        body: "Internal Server Error", // Send a generic message to the client, don't expose the raw error
       };
     }
-  }
-
-  public static async listOrders(): Promise<APIGatewayProxyResult> {
-    const response = {
-      result: "success",
-      message: [],
-    };
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify(response),
-    };
   }
 }

@@ -29,16 +29,32 @@ export default class SQSUtils {
       MessageDeduplicationId,
     });
 
-    return sqsClient.send(command);
+    try {
+      return await sqsClient.send(command);
+    } catch (error) {
+      console.error("Error sending SQS message:", error);
+      throw error;
+    }
   }
 
   public static async receiveMessage(queueUrl: string): Promise<any> {
     const sqsClient = SQSUtils._sqsClient();
-
     const command = new ReceiveMessageCommand({
       QueueUrl: queueUrl,
+      MaxNumberOfMessages: 10,
+      AttributeNames: ["MessageGroupId"],
+      MessageAttributeNames: ["Messsages"],
+      VisibilityTimeout: 20,
+      WaitTimeSeconds: 0,
     });
-
-    return sqsClient.send(command);
+    try {
+      const result = await sqsClient.send(command);
+      console.log("Received messages:", result);
+      console.log("Received messages--->>", result.Messages);
+      return result;
+    } catch (error) {
+      console.error("Error receiving SQS message:", error);
+      throw error;
+    }
   }
 }

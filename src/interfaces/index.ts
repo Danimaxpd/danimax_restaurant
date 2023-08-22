@@ -8,6 +8,7 @@ export interface Ingredient {
 export interface Order {
   recipeName: string;
   ingredients: Ingredient[];
+  uuid: string;
   status: "new-order" | "ready-for-kitchen" | "in-preparation" | "done";
   createDate: Date;
   updateDate: Date;
