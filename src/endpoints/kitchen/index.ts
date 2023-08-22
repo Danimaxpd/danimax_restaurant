@@ -11,7 +11,7 @@ import { ObjectId, Db } from "mongodb";
 import SQSUtils from "../../utils/sqs";
 import { connectToDB } from "../../utils/mongo";
 import { getRandomRecipe } from "../../utils/randomRecipe";
-import { Order, Recipe } from "../../interfaces";
+import { Order, ParsedBodyEvent, Recipe } from "../../interfaces";
 import { generateSHA256 } from "../../utils/strings";
 
 export default class OrdersHandler {
@@ -193,11 +193,11 @@ export default class OrdersHandler {
   }
 
   public static async reProcessOrder(
-    event: APIGatewayProxyEvent,
+    event: ParsedBodyEvent,
   ): Promise<APIGatewayProxyResult> {
     const db = await OrdersHandler.connectDB();
     try {
-      const orderId = event.pathParameters?.orderId;
+      const orderId = event.body.orderId;
       if (!orderId) {
         throw new Error("Invalid order id");
       }

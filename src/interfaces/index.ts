@@ -1,3 +1,4 @@
+import { APIGatewayProxyEvent } from "aws-lambda/trigger/api-gateway-proxy";
 import { ObjectId } from "mongodb";
 
 export interface Ingredient {
@@ -25,3 +26,10 @@ export interface Warehouse {
   quantity: number;
   ingredient: string;
 }
+
+export type ParsedBodyEvent = Omit<APIGatewayProxyEvent, "body"> & {
+  body: {
+    orderId: string;
+    [key: string]: any;
+  };
+};
