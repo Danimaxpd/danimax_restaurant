@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile
     environment:
       - NODE_ENV=development
+    ports:
+      - "3000:3000"
     volumes:
       - .:/app
     depends_on:
@@ -14,10 +16,15 @@ services:
 
   mongodb:
     image: mongo:latest
+    restart: always
     ports:
       - "27017:27017"
     volumes:
       - mongodb-data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: danimax_restaurant
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
 
 volumes:
   mongodb-data:

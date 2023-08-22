@@ -2,8 +2,8 @@
 FROM amazonlinux:2
 
 # Define environment variables for Node and npm
-ENV NODE_VERSION 18.x
-ENV NPM_VERSION 9.5.1
+ENV NODE_VERSION 16.x
+ENV NPM_VERSION 8.19.4
 
 # Install Node.js and npm
 RUN curl --silent --location https://rpm.nodesource.com/setup_$NODE_VERSION | bash - && \
@@ -11,7 +11,7 @@ RUN curl --silent --location https://rpm.nodesource.com/setup_$NODE_VERSION | ba
   yum install -y nodejs npm-$NPM_VERSION
 
 # Install Serverless framework globally
-RUN npm global add serverless
+RUN npm install -g serverless
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -19,8 +19,8 @@ WORKDIR /usr/src/app
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json/package-lock are copied
 COPY package*.json ./
-COPY package-lock ./
-RUN npm install
+COPY package-lock.json ./
+RUN npm i
 
 # Bundle app source
 COPY . .
