@@ -26,14 +26,6 @@ functions:
       - http:
           path: v1/orders
           method: post
-  kitchenCookOrders:
-    handler: dist/index.cookOrderHandler
-    environment:
-      KITCHEN_COOK_QUEUE_URL: ${construct:kitchenCook.queueUrl}
-    events:
-      - http:
-          path: v1/cook_orders
-          method: post
   kitchenListOrders:  
     handler: dist/index.listOrdersHandler
     events:
@@ -45,15 +37,6 @@ functions:
     events:
       - http:
           path: v1/orders/current
-          method: get
-  warehouse:
-    handler: dist/index.getIngredientsHandler
-    environment:
-      WAREHOUSE_QUEUE_URL: ${construct:warehouse.queueUrl}
-      KITCHEN_COOK_QUEUE_URL: ${construct:kitchenCook.queueUrl}
-    events:
-      - http:
-          path: v1/warehouse/getIngredientsHandler
           method: get
 
 constructs:

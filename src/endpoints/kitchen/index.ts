@@ -1,7 +1,11 @@
 require("dotenv").config();
 
 import { v4 as uuidv4 } from "uuid";
-import { APIGatewayProxyResult, APIGatewayProxyEvent } from "aws-lambda";
+import {
+  APIGatewayProxyResult,
+  APIGatewayProxyEvent,
+  SQSEvent,
+} from "aws-lambda";
 import { ObjectId, Db } from "mongodb";
 
 import SQSUtils from "../../utils/sqs";
@@ -29,7 +33,8 @@ export default class OrdersHandler {
     };
 
     console.info("Inserting order into DB...");
-    return db.collection("orders").insertOne(recipeData);
+    const result = db.collection("orders").insertOne(recipeData);
+    return { ...result, ...randomRecipeData };
   }
 
   private static async sendOrderToSQS(order: any) {
@@ -76,21 +81,19 @@ export default class OrdersHandler {
       console.error("Error in createOrder:", error);
       return {
         statusCode: 500,
-        body: JSON.stringify({ message: "Internal Server Error" }), // It's usually not a good practice to send raw error messages to the client. Use a generic message instead.
+        body: error.message,
       };
     }
   }
 
-  public static async cookOrder() {
+  public static async cookOrder(event: SQSEvent): Promise<void> {
     const db = await OrdersHandler.connectDB();
 
     try {
-      const { Messages } = await SQSUtils.receiveMessage(
-        process.env.KITCHEN_QUEUE_URL,
-      );
-
+      const Messages = event.Records;
       if (!Messages) {
-        throw new Error("No messages in the queue");
+        console.error("statusCode: 204, No messages in the queue");
+        throw new Error("statusCode: 204, No messages in the queue");
       }
 
       console.log("Messages", Messages);
@@ -106,21 +109,14 @@ export default class OrdersHandler {
       );
 
       if (result.matchedCount === 0) {
-        return {
-          statusCode: 404,
-          body: JSON.stringify({ message: "Order not found." }),
-        };
+        console.error("Order not found");
+        throw new Error("Order not found");
       }
 
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ message: "Order updated successfully." }),
-      };
+      console.log("Cook order: result:", result);
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: error.message,
-      };
+      console.error("Error in cookOrder:", error);
+      throw new error();
     }
   }
 

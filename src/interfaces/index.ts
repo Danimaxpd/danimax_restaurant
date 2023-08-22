@@ -15,6 +15,7 @@ export interface Order {
 }
 
 export interface Recipe {
+  _id?: ObjectId; // MongoDB ObjectId
   name: string;
   ingredients: Ingredient[];
 }

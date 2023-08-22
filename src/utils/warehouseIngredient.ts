@@ -2,8 +2,8 @@ require("dotenv").config();
 
 import querystring from "node:querystring";
 import { connectToDB } from "./mongo";
-import { Warehouse } from "../interfaces";
-import { ObjectId } from "mongodb";
+import { Order, Warehouse } from "../interfaces";
+import { ObjectId, Db } from "mongodb";
 import axios from "axios";
 
 const MAX_RETRIES = 5;
@@ -11,8 +11,13 @@ const buyIngredientsUrl =
   process.env.APP_BUY_INGREDIENTS ||
   "https://recruitment.alegra.com/api/farmers-market/buy";
 
+const connectDB = async (): Promise<Db> => {
+  console.info("Connecting to DB...");
+  return connectToDB(process.env.DB_URL);
+};
+
 export const getInventory = async () => {
-  const db = await connectToDB(process.env.MONGODB_URI);
+  const db = await connectDB();
 
   const results = await db.collection("warehouse").find().toArray();
 
@@ -24,9 +29,33 @@ export const getInventory = async () => {
 
   return warehouseInventory;
 };
+export const updateOrder = async (
+  orderId: ObjectId,
+  status: string = "ready-for-kitchen",
+) => {
+  const db = await connectDB();
+
+  const results = await db.collection("orders").updateOne(
+    { _id: new ObjectId(orderId) },
+    {
+      $set: {
+        status,
+        updateDate: new Date(),
+      },
+    },
+  );
+
+  const order = results as unknown as Order; // Explicit type assertion
+
+  if (!order) {
+    throw new Error("No Order found in the collection");
+  }
+
+  return order;
+};
 
 export const updateInventory = async (orderId: ObjectId, quantity: number) => {
-  const db = await connectToDB(process.env.MONGODB_URI);
+  const db = await connectDB();
 
   const results = await db.collection("warehouse").updateOne(
     { _id: new ObjectId(orderId) },

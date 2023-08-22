@@ -4,7 +4,7 @@ import { connectToDB } from "./mongo";
 import { Recipe } from "../interfaces";
 
 export const getRandomRecipe = async () => {
-  const db = await connectToDB(process.env.MONGODB_URI);
+  const db = await connectToDB(process.env.DB_URL);
 
   const results = await db
     .collection("recipes")

@@ -1,59 +1,34 @@
 import { v4 as uuidv4 } from "uuid";
-import { APIGatewayProxyResult } from "aws-lambda";
+import { SQSEvent } from "aws-lambda";
 import SQSUtils from "../../utils/sqs";
-import { Order } from "../../interfaces";
+import { Recipe } from "../../interfaces";
 import {
   fetchIngredientWithRetry,
   getInventory,
   updateInventory,
+  updateOrder,
 } from "../../utils/warehouseIngredient";
 import { generateSHA256 } from "../../utils/strings";
 
 export default class WarehouseHandler {
-  public static async getIngredients(): Promise<APIGatewayProxyResult> {
+  public static async getIngredients(event: SQSEvent): Promise<void> {
     try {
-      await SQSUtils.sendMessage(
-        process.env.WAREHOUSE_QUEUE_URL,
-        JSON.stringify("jajajajajajaj"),
-        "warehouse",
-        generateSHA256(uuidv4()),
-        {
-          Title: {
-            DataType: "String",
-            StringValue: "warehouse_order",
-          },
-          Author: {
-            DataType: "String",
-            StringValue: "kitchen",
-          },
-        },
-      );
-      const { Messages } = await SQSUtils.receiveMessage(
-        process.env.WAREHOUSE_QUEUE_URL,
-      );
-
-      console.debug(Messages);
-
+      const Messages = event.Records;
       if (!Messages) {
-        console.warn("No messages in the queue");
-        return {
-          statusCode: 204,
-          body: "No messages in the queue",
-        };
+        console.error("statusCode: 204, No messages in the queue");
+        throw new Error("statusCode: 204, No messages in the queue");
       }
-
-      console.info("Received Messages:", Messages);
-
       // Assuming the order details are passed from the sqs
-      let order: Order = JSON.parse(Messages[0].Body);
+      let order: Recipe = JSON.parse(Messages[0].body);
+      console.info("Received order:", order);
 
-      // Validate order structure before proceeding (can be improved further)
       if (!order || !order.ingredients) {
         throw new Error("Invalid order format in the message");
       }
 
-      const currentInventory = await getInventory();
+      await updateOrder(order._id);
 
+      const currentInventory = await getInventory();
       const inventoryUpdates = [];
 
       for (let ingredient of order.ingredients) {
@@ -89,9 +64,9 @@ export default class WarehouseHandler {
         const element = inventoryUpdates[index];
         await updateInventory(element._id, element.quantity);
       }
-      order.status = "ready-for-kitchen";
-      order.updateDate = new Date();
-
+      console.info("Updating order: updateOrder");
+      await updateOrder(order._id, "ready-for-kitchen");
+      console.info("Sending message to SQS...");
       await SQSUtils.sendMessage(
         process.env.KITCHEN_COOK_QUEUE_URL,
         JSON.stringify({
@@ -111,17 +86,10 @@ export default class WarehouseHandler {
           },
         },
       );
-
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ result: "success" }),
-      };
+      console.info("Done success 200");
     } catch (error) {
       console.error("Error in getIngredients:", error);
-      return {
-        statusCode: 500,
-        body: "Internal Server Error", // Send a generic message to the client, don't expose the raw error
-      };
+      throw new error();
     }
   }
 }

@@ -9,11 +9,7 @@ import httpSecurityHeaders from "@middy/http-security-headers";
 import { WarehouseHandler, OrdersHandler } from "./endpoints";
 
 // warehouse functions handlers
-const getIngredientsHandler = middy(WarehouseHandler.getIngredients)
-  .use(cors())
-  .use(httpSecurityHeaders())
-  .use(jsonBodyParser())
-  .use(httpErrorHandler());
+const getIngredientsHandler = WarehouseHandler.getIngredients; // Worker queue handler
 
 // Kitchen functions handlers
 const ordersHandler = middy(OrdersHandler.createOrder)
@@ -22,11 +18,7 @@ const ordersHandler = middy(OrdersHandler.createOrder)
   .use(jsonBodyParser())
   .use(httpErrorHandler());
 
-const cookOrderHandler = middy(OrdersHandler.cookOrder)
-  .use(cors())
-  .use(httpSecurityHeaders())
-  .use(jsonBodyParser())
-  .use(httpErrorHandler());
+const cookOrderHandler = OrdersHandler.cookOrder; // Worker queue handler
 
 const listOrdersHandler = middy(OrdersHandler.listOrdersHandler)
   .use(cors())

@@ -5,10 +5,10 @@ import {
 } from "@aws-sdk/client-sqs";
 
 export default class SQSUtils {
-  private static _sqsClient() {
+  private static _sqsClient(): SQSClient {
     return new SQSClient({
       apiVersion: "latest",
-      region: process.env.AWS_REGION,
+      region: process.env.AWS_REGION || "us-east-1",
     });
   }
 
@@ -18,15 +18,17 @@ export default class SQSUtils {
     MessageGroupId: string,
     MessageDeduplicationId: string,
     metadata?: any,
+    isFifo: boolean = false,
   ): Promise<any> {
     const sqsClient = SQSUtils._sqsClient();
 
     const command = new SendMessageCommand({
       QueueUrl: queueUrl,
+      DelaySeconds: isFifo ? undefined : 10,
       MessageAttributes: metadata,
       MessageBody: messageBody,
-      MessageGroupId,
-      MessageDeduplicationId,
+      MessageGroupId: isFifo ? MessageGroupId : undefined,
+      MessageDeduplicationId: isFifo ? MessageDeduplicationId : undefined,
     });
 
     try {
@@ -39,18 +41,16 @@ export default class SQSUtils {
 
   public static async receiveMessage(queueUrl: string): Promise<any> {
     const sqsClient = SQSUtils._sqsClient();
-    const command = new ReceiveMessageCommand({
-      QueueUrl: queueUrl,
-      MaxNumberOfMessages: 10,
-      AttributeNames: ["MessageGroupId"],
-      MessageAttributeNames: ["Messsages"],
-      VisibilityTimeout: 20,
-      WaitTimeSeconds: 0,
-    });
     try {
+      const command = new ReceiveMessageCommand({
+        QueueUrl: queueUrl,
+        MaxNumberOfMessages: 1,
+        MessageAttributeNames: ["All"],
+        AttributeNames: ["SentTimestamp"],
+        WaitTimeSeconds: 20,
+      });
+      console.log("Received messages:", command);
       const result = await sqsClient.send(command);
-      console.log("Received messages:", result);
-      console.log("Received messages--->>", result.Messages);
       return result;
     } catch (error) {
       console.error("Error receiving SQS message:", error);
