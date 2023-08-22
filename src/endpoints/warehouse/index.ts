@@ -69,10 +69,7 @@ export default class WarehouseHandler {
       console.info("Sending message to SQS...");
       await SQSUtils.sendMessage(
         process.env.KITCHEN_COOK_QUEUE_URL,
-        JSON.stringify({
-          MessageGroupId: "kitchen",
-          MessageBody: JSON.stringify(order),
-        }),
+        JSON.stringify(order),
         generateSHA256(uuidv4()),
         "kitchen",
         {
