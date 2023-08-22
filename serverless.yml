@@ -26,6 +26,14 @@ functions:
       - http:
           path: v1/orders
           method: post
+  kitchenReProcessOrder:
+    handler: dist/index.reProcessOrderHandler
+    environment:
+      WAREHOUSE_QUEUE_URL: ${construct:warehouse.queueUrl}
+    events:
+      - http:
+          path: v1/re_process_order
+          method: post
   kitchenListOrders:  
     handler: dist/index.listOrdersHandler
     events:

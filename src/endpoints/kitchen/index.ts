@@ -191,4 +191,40 @@ export default class OrdersHandler {
       };
     }
   }
+
+  public static async reProcessOrder(
+    event: APIGatewayProxyEvent,
+  ): Promise<APIGatewayProxyResult> {
+    const db = await OrdersHandler.connectDB();
+    try {
+      const orderId = event.pathParameters?.orderId;
+      if (!orderId) {
+        throw new Error("Invalid order id");
+      }
+
+      const result = await db.collection("orders").findOne({
+        _id: new ObjectId(orderId),
+      });
+
+      if (!result) {
+        throw new Error("Order not found");
+      }
+
+      const order = result as unknown as Order;
+
+      await OrdersHandler.sendOrderToSQS(order);
+
+      return {
+        statusCode: 201,
+        body: JSON.stringify({
+          data: order,
+        }),
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        body: error.message,
+      };
+    }
+  }
 }
