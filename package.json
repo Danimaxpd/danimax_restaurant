@@ -1,7 +1,7 @@
 {
-  "name": "lambda-boilerplate",
+  "name": "danimax_restaurant",
   "version": "1.0.0",
-  "description": "",
+  "description": "This project create a serverless API for a restaurant code challenge by Alegra",
   "scripts": {
     "deploy": "npm run build && serverless deploy",
     "deploy:offline": "npm run build && serverless offline",

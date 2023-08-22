@@ -1,0 +1,630 @@
+{
+	"info": {
+		"_postman_id": "97201292-e958-4be6-b44d-ba8430e88cd1",
+		"name": "danimax_restaurant",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27378552"
+	},
+	"item": [
+		{
+			"name": "AWS",
+			"item": [
+				{
+					"name": "orders",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/dev/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dev",
+								"v1",
+								"orders"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "orders",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/dev/v1/orders",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"dev",
+										"v1",
+										"orders"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "124"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 22 Aug 2023 05:45:03 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "cae91630-d88a-4b5f-910f-036c96bfed80"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains; preload"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "KDC2uGV2oAMFieQ="
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-64e44b5d-4b626a3d215f6aed6e9331d1;Sampled=0;lineage=203aaedd:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 56944c17909cc5b7a4102b8096acac2c.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "BOG50-P1"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "ZVBKRXroobJGXadf9ItRWeu5FZv8TavRZKL6X-4CZLao1x1aL1GSxg=="
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"result\": \"success\",\n    \"message\": {\n        \"_id\": \"64e3ddeb98338ec4fe8b560b\",\n        \"name\": \"Lemonade\",\n        \"ingredients\": [\n            {\n                \"name\": \"lemon\",\n                \"qty\": 2\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "re_process_order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orderId\": \"64e3ddeb98338ec4fe8b560c\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/dev/v1/re_process_order",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dev",
+								"v1",
+								"re_process_order"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"orderId\": \"64e3ddeb98338ec4fe8b560c\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/dev/v1/re_process_order",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"dev",
+										"v1",
+										"re_process_order"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "313"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 22 Aug 2023 06:43:54 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "cdb865a2-84ad-406c-9979-ffc06d94888f"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains; preload"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "KDLebHTBIAMFSeg="
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-64e45928-05d0cb701a5be1a8713a43dc;Sampled=0;lineage=4e095090:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 d2a8ed168561f3bc7e1197e90d2c7298.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "BOG50-P1"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "luRgqmt0FlRmiRs3zJMEhr8JULFo3klbv5s3xw6-lyQrgES6Rs9alw=="
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"_id\": \"64e3ddeb98338ec4fe8b560c\",\n        \"name\": \"Tomato Cream\",\n        \"ingredients\": [\n            {\n                \"name\": \"tomato\",\n                \"qty\": 3\n            },\n            {\n                \"name\": \"potato\",\n                \"qty\": 1\n            },\n            {\n                \"name\": \"onion\",\n                \"qty\": 1\n            }\n        ],\n        \"status\": \"ready-for-kitchen\",\n        \"uuid\": \"15320a33-bc12-45f4-9936-e3cf2db2cc3c\",\n        \"createDate\": \"2023-08-22T05:32:22.779Z\",\n        \"updateDate\": \"2023-08-22T05:32:35.145Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/dev/v1/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dev",
+								"v1",
+								"orders"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "orders",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/dev/v1/orders",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"dev",
+										"v1",
+										"orders"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "586"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 22 Aug 2023 06:04:40 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "bd3ef577-6e71-4d13-ae0f-5c6ead1e9166"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains; preload"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "KDFumFNxIAMFjxQ="
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-64e44ff6-2e470426428fa9e64b36d9ee;Sampled=0;lineage=7fe3301a:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 2d421cb55f565ff4c38cbaaf0ba2f1a2.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "BOG50-P1"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "6tNBdMFZVlhyqt8LM5c-verAKQ0xa-J8yj9Xs6mfRAhf9_shDMLeYA=="
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"_id\": \"64e3ddeb98338ec4fe8b560c\",\n            \"name\": \"Tomato Cream\",\n            \"ingredients\": [\n                {\n                    \"name\": \"tomato\",\n                    \"qty\": 3\n                },\n                {\n                    \"name\": \"potato\",\n                    \"qty\": 1\n                },\n                {\n                    \"name\": \"onion\",\n                    \"qty\": 1\n                }\n            ],\n            \"status\": \"ready-for-kitchen\",\n            \"uuid\": \"15320a33-bc12-45f4-9936-e3cf2db2cc3c\",\n            \"createDate\": \"2023-08-22T05:32:22.779Z\",\n            \"updateDate\": \"2023-08-22T05:32:35.145Z\"\n        },\n        {\n            \"_id\": \"64e3ddeb98338ec4fe8b560b\",\n            \"name\": \"Lemonade\",\n            \"ingredients\": [\n                {\n                    \"name\": \"lemon\",\n                    \"qty\": 2\n                }\n            ],\n            \"status\": \"done\",\n            \"uuid\": \"58ebbb7c-f377-486a-aff3-eed596f8564a\",\n            \"createDate\": \"2023-08-22T05:45:03.680Z\",\n            \"updateDate\": \"2023-08-22T05:45:27.543Z\"\n        }\n    ],\n    \"metadata\": {\n        \"page\": 1,\n        \"pageSize\": 0\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "orders/current",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/dev/v1/orders/current",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dev",
+								"v1",
+								"orders",
+								"current"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "orders/current",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/dev/v1/orders/current",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"dev",
+										"v1",
+										"orders",
+										"current"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "46"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 22 Aug 2023 06:49:01 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "438d224e-4c49-4694-84df-ba8b9a9dddd2"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains; preload"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "KDMOaFDyIAMFYDA="
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-64e45a5b-0d7d4ea45eb7d78600be8e96;Sampled=0;lineage=c6586cd6:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 2e8010b39acc99d1371b96a5f3d32b6a.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "BOG50-P1"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "QXqfitebuMWw_zP5Ju12iPxReDpJNU9jKukj8MvLI3hbMxPxuvsFHw=="
+								}
+							],
+							"cookie": [],
+							"body": "// if everithing is done the data will be empty\n{\n    \"data\": [],\n    \"metadata\": {\n        \"page\": 1,\n        \"pageSize\": 0\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "alegra-market-buy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://recruitment.alegra.com/api/farmers-market/buy?ingredient=tomato",
+					"protocol": "https",
+					"host": [
+						"recruitment",
+						"alegra",
+						"com"
+					],
+					"path": [
+						"api",
+						"farmers-market",
+						"buy"
+					],
+					"query": [
+						{
+							"key": "ingredient",
+							"value": "tomato"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "alegra-market-buy",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://recruitment.alegra.com/api/farmers-market/buy?ingredient=tomato",
+							"protocol": "https",
+							"host": [
+								"recruitment",
+								"alegra",
+								"com"
+							],
+							"path": [
+								"api",
+								"farmers-market",
+								"buy"
+							],
+							"query": [
+								{
+									"key": "ingredient",
+									"value": "tomato"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "18"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 22 Aug 2023 05:26:54 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "02e757ef-0813-46d8-b122-bf1e45cb5f41"
+						},
+						{
+							"key": "access-control-allow-origin",
+							"value": "*"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "KDAMwGXEoAMF01Q="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-64e4471e-0abf88fc56cb6509202dab50;Sampled=0;lineage=ba5ad5de:0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 d2a8ed168561f3bc7e1197e90d2c7298.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "BOG50-P1"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "BsB4ODu8aBEyTS7bY5f9pQ0VGMdCcyJTH-saaCHltR4o37FETTkr5A=="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"quantitySold\": 0\n}"
+				}
+			]
+		}
+	]
+}

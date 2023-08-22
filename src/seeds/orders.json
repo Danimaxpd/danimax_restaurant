@@ -1,0 +1,47 @@
+[{
+  "_id": {
+    "$oid": "64e3ddeb98338ec4fe8b560c"
+  },
+  "name": "Tomato Cream",
+  "ingredients": [
+    {
+      "name": "tomato",
+      "qty": 3
+    },
+    {
+      "name": "potato",
+      "qty": 1
+    },
+    {
+      "name": "onion",
+      "qty": 1
+    }
+  ],
+  "status": "ready-for-kitchen",
+  "uuid": "15320a33-bc12-45f4-9936-e3cf2db2cc3c",
+  "createDate": {
+    "$date": "2023-08-22T05:32:22.779Z"
+  },
+  "updateDate": {
+    "$date": "2023-08-22T05:32:35.145Z"
+  }
+},{
+  "_id": {
+    "$oid": "64e3ddeb98338ec4fe8b560b"
+  },
+  "name": "Lemonade",
+  "ingredients": [
+    {
+      "name": "lemon",
+      "qty": 2
+    }
+  ],
+  "status": "done",
+  "uuid": "58ebbb7c-f377-486a-aff3-eed596f8564a",
+  "createDate": {
+    "$date": "2023-08-22T05:45:03.680Z"
+  },
+  "updateDate": {
+    "$date": "2023-08-22T05:45:27.543Z"
+  }
+}]

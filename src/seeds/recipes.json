@@ -1,0 +1,115 @@
+[{
+  "_id": {
+    "$oid": "64e3ddeb98338ec4fe8b560a"
+  },
+  "name": "Chicken Risotto",
+  "ingredients": [
+    {
+      "name": "chicken",
+      "qty": 1
+    },
+    {
+      "name": "rice",
+      "qty": 1
+    },
+    {
+      "name": "onion",
+      "qty": 2
+    },
+    {
+      "name": "cheese",
+      "qty": 1
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "64e3ddeb98338ec4fe8b560b"
+  },
+  "name": "Lemonade",
+  "ingredients": [
+    {
+      "name": "lemon",
+      "qty": 2
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "64e3ddeb98338ec4fe8b560c"
+  },
+  "name": "Tomato Cream",
+  "ingredients": [
+    {
+      "name": "tomato",
+      "qty": 3
+    },
+    {
+      "name": "potato",
+      "qty": 1
+    },
+    {
+      "name": "onion",
+      "qty": 1
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "64e3ddeb98338ec4fe8b560d"
+  },
+  "name": "Chicken Salad",
+  "ingredients": [
+    {
+      "name": "lettuce",
+      "qty": 3
+    },
+    {
+      "name": "chicken",
+      "qty": 1
+    },
+    {
+      "name": "onion",
+      "qty": 1
+    },
+    {
+      "name": "tomato",
+      "qty": 1
+    },
+    {
+      "name": "cheese",
+      "qty": 1
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "64e3ddeb98338ec4fe8b560e"
+  },
+  "name": "Baked Potato with Meat",
+  "ingredients": [
+    {
+      "name": "potato",
+      "qty": 2
+    },
+    {
+      "name": "meat",
+      "qty": 1
+    },
+    {
+      "name": "cheese",
+      "qty": 1
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "64e3ddeb98338ec4fe8b560f"
+  },
+  "name": "French Fries with Ketchup",
+  "ingredients": [
+    {
+      "name": "potato",
+      "qty": 3
+    },
+    {
+      "name": "ketchup",
+      "qty": 2
+    }
+  ]
+}]
