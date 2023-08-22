@@ -1,7 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
-import { SQSEvent } from "aws-lambda";
+import {
+  SQSEvent,
+  APIGatewayProxyEvent,
+  APIGatewayProxyResult,
+} from "aws-lambda";
 import SQSUtils from "../../utils/sqs";
-import { Recipe } from "../../interfaces";
+import { PurchasedIngredients, Recipe, Warehouse } from "../../interfaces";
 import {
   fetchIngredientWithRetry,
   getInventory,
@@ -9,8 +13,15 @@ import {
   updateOrder,
 } from "../../utils/warehouseIngredient";
 import { generateSHA256 } from "../../utils/strings";
+import { Db } from "mongodb";
+import { connectToDB } from "../../utils/mongo";
 
 export default class WarehouseHandler {
+  private static async connectDB(): Promise<Db> {
+    console.info("Connecting to DB...");
+    return connectToDB(process.env.DB_URL);
+  }
+
   public static async getIngredients(event: SQSEvent): Promise<void> {
     try {
       const Messages = event.Records;
@@ -87,6 +98,76 @@ export default class WarehouseHandler {
     } catch (error) {
       console.error("Error in getIngredients:", error);
       throw new error();
+    }
+  }
+
+  public static async listInventoryIngredients(
+    event: APIGatewayProxyEvent,
+  ): Promise<APIGatewayProxyResult> {
+    const db = await WarehouseHandler.connectDB();
+    try {
+      const page = parseInt(event.queryStringParameters?.page, 10) || 1;
+      const pageSize =
+        parseInt(event.queryStringParameters?.pageSize, 10) || 10; // Changed from 'page' to 'pageSize'
+
+      const skip = (page - 1) * pageSize;
+
+      const results = await db
+        .collection("warehouse")
+        .find()
+        .skip(skip)
+        .limit(pageSize)
+        .toArray();
+
+      const ingredients = results as unknown as Warehouse[];
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          data: ingredients,
+          metadata: { page, pageSize },
+        }),
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        body: error.message,
+      };
+    }
+  }
+
+  public static async listPurchasedIngredients(
+    event: APIGatewayProxyEvent,
+  ): Promise<APIGatewayProxyResult> {
+    const db = await WarehouseHandler.connectDB();
+    try {
+      const page = parseInt(event.queryStringParameters?.page, 10) || 1;
+      const pageSize =
+        parseInt(event.queryStringParameters?.pageSize, 10) || 10; // Changed from 'page' to 'pageSize'
+
+      const skip = (page - 1) * pageSize;
+
+      const results = await db
+        .collection("purchasedIngredients")
+        .find()
+        .skip(skip)
+        .limit(pageSize)
+        .toArray();
+
+      const ingredients = results as unknown as PurchasedIngredients[];
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          data: ingredients,
+          metadata: { page, pageSize },
+        }),
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        body: error.message,
+      };
     }
   }
 }

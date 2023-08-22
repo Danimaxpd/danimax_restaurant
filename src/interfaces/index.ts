@@ -27,6 +27,14 @@ export interface Warehouse {
   ingredient: string;
 }
 
+export interface PurchasedIngredients {
+  _id?: ObjectId;
+  ingredientName: string;
+  quantitySold: number;
+  createDate?: Date;
+  updateDate?: Date;
+}
+
 export type ParsedBodyEvent = Omit<APIGatewayProxyEvent, "body"> & {
   body: {
     orderId: string;

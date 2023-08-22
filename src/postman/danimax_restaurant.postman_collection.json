@@ -273,7 +273,13 @@
 					"name": "orders",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Access-Control-Allow-Origin",
+								"value": "*",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{base_url}}/dev/v1/orders",
 							"host": [
@@ -509,7 +515,253 @@
 								}
 							],
 							"cookie": [],
-							"body": "// if everithing is done the data will be empty\n{\n    \"data\": [],\n    \"metadata\": {\n        \"page\": 1,\n        \"pageSize\": 0\n    }\n}"
+							"body": "// if everything is done the data will be empty\n{\n    \"data\": [],\n    \"metadata\": {\n        \"page\": 1,\n        \"pageSize\": 0\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "warehouse inventory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/dev/v1/warehouse/inventory",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dev",
+								"v1",
+								"warehouse",
+								"inventory"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "warehouse/inventory Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/dev/v1/warehouse/inventory",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"dev",
+										"v1",
+										"warehouse",
+										"inventory"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "743"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 22 Aug 2023 21:56:45 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "bdab0f66-6f63-465c-bc65-e6875d0df38d"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains; preload"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "KFRMdFgHoAMF6tQ="
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-64e52f1c-7ee7ee6662a1b2f10e292548;Sampled=0;lineage=74b3a267:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 9c616eaf86921af6212cb1fc8e4f14aa.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "BOG50-P1"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "rC-ngKdm2n8yA1aZcYSJSDthhhC_qUvwtVdJfBLZBjgZyy5-p3ugWQ=="
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"_id\": \"64e3de9f98338ec4fe8b5612\",\n            \"ingredient\": \"tomato\",\n            \"quantity\": 0\n        },\n        {\n            \"_id\": \"64e3de9f98338ec4fe8b5613\",\n            \"ingredient\": \"lemon\",\n            \"quantity\": 3\n        },\n        {\n            \"_id\": \"64e3de9f98338ec4fe8b5614\",\n            \"ingredient\": \"potato\",\n            \"quantity\": 2\n        },\n        {\n            \"_id\": \"64e3de9f98338ec4fe8b5615\",\n            \"ingredient\": \"rice\",\n            \"quantity\": 3\n        },\n        {\n            \"_id\": \"64e3de9f98338ec4fe8b5616\",\n            \"ingredient\": \"ketchup\",\n            \"quantity\": 1\n        },\n        {\n            \"_id\": \"64e3de9f98338ec4fe8b5617\",\n            \"ingredient\": \"lettuce\",\n            \"quantity\": 3\n        },\n        {\n            \"_id\": \"64e3de9f98338ec4fe8b5618\",\n            \"ingredient\": \"onion\",\n            \"quantity\": 3\n        },\n        {\n            \"_id\": \"64e3de9f98338ec4fe8b5619\",\n            \"ingredient\": \"cheese\",\n            \"quantity\": 0\n        },\n        {\n            \"_id\": \"64e3de9f98338ec4fe8b561a\",\n            \"ingredient\": \"meat\",\n            \"quantity\": 2\n        },\n        {\n            \"_id\": \"64e3de9f98338ec4fe8b561b\",\n            \"ingredient\": \"chicken\",\n            \"quantity\": 0\n        }\n    ],\n    \"metadata\": {\n        \"page\": 1,\n        \"pageSize\": 10\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "warehouse purchased",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/dev/v1/warehouse/purchased",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dev",
+								"v1",
+								"warehouse",
+								"purchased"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "warehouse/purchased Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/dev/v1/warehouse/purchased",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"dev",
+										"v1",
+										"warehouse",
+										"purchased"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1630"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 22 Aug 2023 22:26:57 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "5d7040ca-a0b5-4599-9cf8-c02130d67831"
+								},
+								{
+									"key": "X-DNS-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "X-Permitted-Cross-Domain-Policies",
+									"value": "none"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=15552000; includeSubDomains; preload"
+								},
+								{
+									"key": "Origin-Agent-Cluster",
+									"value": "?1"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "KFVnhFwbIAMFg0w="
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-64e5362f-39847ce75ed99a71585c5bf4;Sampled=0;lineage=f666b4c1:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 266a90e97e11da9abf4a8ed10543ed6c.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "BOG50-P1"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "eZH96UvKh4O3ugd416zzLIikXSbGASMN9ia35exDgDrVEo6m5_Qk2w=="
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"_id\": \"64e52f6c8df24701fece4b22\",\n            \"ingredientName\": \"chicken\",\n            \"quantitySold\": 1,\n            \"createDate\": \"2023-08-22T21:58:03.999Z\",\n            \"updateDate\": \"2023-08-22T21:58:03.999Z\"\n        },\n        {\n            \"_id\": \"64e52f6c8df24701fece4b23\",\n            \"ingredientName\": \"cheese\",\n            \"quantitySold\": 1,\n            \"createDate\": \"2023-08-22T21:58:04.035Z\",\n            \"updateDate\": \"2023-08-22T21:58:04.035Z\"\n        },\n        {\n            \"_id\": \"64e52f788df24701fece4b24\",\n            \"ingredientName\": \"tomato\",\n            \"quantitySold\": 4,\n            \"createDate\": \"2023-08-22T21:58:16.400Z\",\n            \"updateDate\": \"2023-08-22T21:58:16.400Z\"\n        },\n        {\n            \"_id\": \"64e53552190f0133481cf80f\",\n            \"ingredientName\": \"chicken\",\n            \"quantitySold\": 2,\n            \"createDate\": \"2023-08-22T22:23:14.631Z\",\n            \"updateDate\": \"2023-08-22T22:23:14.631Z\"\n        },\n        {\n            \"_id\": \"64e535536eb05f5771e17f9c\",\n            \"ingredientName\": \"potato\",\n            \"quantitySold\": 2,\n            \"createDate\": \"2023-08-22T22:23:15.821Z\",\n            \"updateDate\": \"2023-08-22T22:23:15.821Z\"\n        },\n        {\n            \"_id\": \"64e535536eb05f5771e17f9d\",\n            \"ingredientName\": \"ketchup\",\n            \"quantitySold\": 2,\n            \"createDate\": \"2023-08-22T22:23:15.855Z\",\n            \"updateDate\": \"2023-08-22T22:23:15.855Z\"\n        },\n        {\n            \"_id\": \"64e53554cda146d086877275\",\n            \"ingredientName\": \"lemon\",\n            \"quantitySold\": 1,\n            \"createDate\": \"2023-08-22T22:23:16.400Z\",\n            \"updateDate\": \"2023-08-22T22:23:16.400Z\"\n        },\n        {\n            \"_id\": \"64e535554388d31e16321c4a\",\n            \"ingredientName\": \"chicken\",\n            \"quantitySold\": 4,\n            \"createDate\": \"2023-08-22T22:23:17.037Z\",\n            \"updateDate\": \"2023-08-22T22:23:17.037Z\"\n        },\n        {\n            \"_id\": \"64e53555cda146d08687727a\",\n            \"ingredientName\": \"potato\",\n            \"quantitySold\": 2,\n            \"createDate\": \"2023-08-22T22:23:17.674Z\",\n            \"updateDate\": \"2023-08-22T22:23:17.674Z\"\n        },\n        {\n            \"_id\": \"64e53555cda146d08687727b\",\n            \"ingredientName\": \"ketchup\",\n            \"quantitySold\": 2,\n            \"createDate\": \"2023-08-22T22:23:17.716Z\",\n            \"updateDate\": \"2023-08-22T22:23:17.716Z\"\n        }\n    ],\n    \"metadata\": {\n        \"page\": 1,\n        \"pageSize\": 10\n    }\n}"
 						}
 					]
 				}

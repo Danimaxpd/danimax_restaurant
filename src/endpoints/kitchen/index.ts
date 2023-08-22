@@ -24,16 +24,20 @@ export default class OrdersHandler {
     db: Db,
     randomRecipeData: any,
   ): Promise<any> {
+    const uuid = uuidv4();
+    delete randomRecipeData._id;
     const recipeData = {
       ...randomRecipeData,
       status: "new-order",
-      uuid: uuidv4(),
+      uuid,
       createDate: new Date(),
       updateDate: new Date(),
     };
 
     console.info("Inserting order into DB...");
-    const result = db.collection("orders").insertOne(recipeData);
+    const result = db
+      .collection("orders")
+      .updateOne({ uuid }, { $set: recipeData }, { upsert: true });
     return { ...result, ...randomRecipeData };
   }
 

@@ -2,7 +2,7 @@ require("dotenv").config();
 
 import querystring from "node:querystring";
 import { connectToDB } from "./mongo";
-import { Order, Warehouse } from "../interfaces";
+import { Order, PurchasedIngredients, Warehouse } from "../interfaces";
 import { ObjectId, Db } from "mongodb";
 import axios from "axios";
 
@@ -29,6 +29,7 @@ export const getInventory = async () => {
 
   return warehouseInventory;
 };
+
 export const updateOrder = async (
   orderId: ObjectId,
   status: string = "ready-for-kitchen",
@@ -75,6 +76,28 @@ export const updateInventory = async (orderId: ObjectId, quantity: number) => {
   return warehouseInventory;
 };
 
+export const insertPurchasedIngredient = async (
+  ingredient: PurchasedIngredients,
+): Promise<PurchasedIngredients> => {
+  const db = await connectDB();
+
+  ingredient.createDate = new Date();
+  ingredient.updateDate = new Date();
+
+  const result = await db
+    .collection("purchasedIngredients")
+    .insertOne(ingredient);
+
+  if (!result.insertedId) {
+    throw new Error("Failed to insert the purchased ingredient");
+  }
+
+  return {
+    _id: result.insertedId,
+    ...ingredient,
+  };
+};
+
 /**
  * Sleep for n milliseconds
  * @param ms number of milliseconds
@@ -96,7 +119,7 @@ export async function fetchIngredientWithRetry(
   const requestQuery = querystring.stringify({ ingredient: ingredientName });
   const url = `${buyIngredientsUrl}?` + requestQuery;
 
-  console.info("fetchIngredientWithRetry url", url);
+  console.info("fetching Ingredients With Retry url", url);
 
   while (retries < MAX_RETRIES) {
     try {
@@ -107,6 +130,10 @@ export async function fetchIngredientWithRetry(
       }
 
       if (purchasedIngredient >= quantity) {
+        await insertPurchasedIngredient({
+          ingredientName,
+          quantitySold: purchasedIngredient,
+        });
         return purchasedIngredient;
       }
     } catch (err) {

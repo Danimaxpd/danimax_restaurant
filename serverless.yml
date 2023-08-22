@@ -54,6 +54,22 @@ functions:
             origin: '*'
           path: v1/orders/current
           method: get
+  warehouseListInventoryIngredients:  
+    handler: dist/index.listInventoryIngredientsHandler
+    events:
+      - http:
+          cors:
+            origin: '*'
+          path: v1/warehouse/inventory
+          method: get
+  warehouseListPurchasedIngredients:
+    handler: dist/index.listPurchasedIngredientsHandler
+    events:
+      - http:
+          cors:
+            origin: '*'
+          path: v1/warehouse/purchased
+          method: get
 
 constructs:
   kitchenCook:

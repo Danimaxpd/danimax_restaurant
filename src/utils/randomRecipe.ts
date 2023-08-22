@@ -16,7 +16,6 @@ export const getRandomRecipe = async () => {
     .toArray();
 
   const randomRecipe = results[0] as Recipe; // Explicit type assertion
-
   // Handle case when there are no recipes in the collection
   if (!randomRecipe) {
     throw new Error("No recipes found in the collection");

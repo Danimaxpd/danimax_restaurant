@@ -11,6 +11,22 @@ import { WarehouseHandler, OrdersHandler } from "./endpoints";
 // warehouse functions handlers
 const getIngredientsHandler = WarehouseHandler.getIngredients; // Worker queue handler
 
+const listInventoryIngredientsHandler = middy(
+  WarehouseHandler.listInventoryIngredients,
+)
+  .use(cors())
+  .use(httpSecurityHeaders())
+  .use(jsonBodyParser())
+  .use(httpErrorHandler());
+
+const listPurchasedIngredientsHandler = middy(
+  WarehouseHandler.listPurchasedIngredients,
+)
+  .use(cors())
+  .use(httpSecurityHeaders())
+  .use(jsonBodyParser())
+  .use(httpErrorHandler());
+
 // Kitchen functions handlers
 const cookOrderHandler = OrdersHandler.cookOrder; // Worker queue handler
 
@@ -43,6 +59,8 @@ module.exports = {
   ordersHandler,
   reProcessOrderHandler,
   cookOrderHandler,
+  listInventoryIngredientsHandler,
+  listPurchasedIngredientsHandler,
   listOrdersHandler,
   listCurrentOrdersHandler,
 };
