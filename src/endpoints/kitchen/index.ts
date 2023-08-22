@@ -144,7 +144,7 @@ export default class OrdersHandler {
         statusCode: 200,
         body: JSON.stringify({
           data: orders,
-          metadata: { page, pageSize: skip },
+          metadata: { page, pageSize: skip || pageSize },
         }),
       };
     } catch (error) {
@@ -181,7 +181,7 @@ export default class OrdersHandler {
         statusCode: 200,
         body: JSON.stringify({
           data: orders,
-          metadata: { page, pageSize: skip },
+          metadata: { page, pageSize: skip || pageSize },
         }),
       };
     } catch (error) {
