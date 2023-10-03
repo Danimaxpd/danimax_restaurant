@@ -131,7 +131,7 @@ export default class OrdersHandler {
     const db = await OrdersHandler.connectDB();
     try {
       const page = parseInt(event.queryStringParameters?.page, 10) | 1;
-      const pageSize = parseInt(event.queryStringParameters?.page, 10) | 10;
+      const pageSize = parseInt(event.queryStringParameters?.pageSize, 10) | 10;
 
       const skip = (page - 1) * pageSize;
 
@@ -166,7 +166,7 @@ export default class OrdersHandler {
     const db = await OrdersHandler.connectDB();
     try {
       const page = parseInt(event.queryStringParameters?.page, 10) | 1;
-      const pageSize = parseInt(event.queryStringParameters?.page, 10) | 10;
+      const pageSize = parseInt(event.queryStringParameters?.pageSize, 10) | 10;
 
       const skip = (page - 1) * pageSize;
       const filter = {
