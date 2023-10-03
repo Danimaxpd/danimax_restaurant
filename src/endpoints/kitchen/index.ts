@@ -130,8 +130,9 @@ export default class OrdersHandler {
   ): Promise<APIGatewayProxyResult> {
     const db = await OrdersHandler.connectDB();
     try {
-      const page = parseInt(event.queryStringParameters?.page, 10) | 1;
-      const pageSize = parseInt(event.queryStringParameters?.pageSize, 10) | 10;
+      const page = parseInt(event.queryStringParameters?.page, 10) || 1;
+      const pageSize =
+        parseInt(event.queryStringParameters?.pageSize, 10) || 10;
 
       const skip = (page - 1) * pageSize;
 
@@ -149,7 +150,7 @@ export default class OrdersHandler {
         statusCode: 200,
         body: JSON.stringify({
           data: orders,
-          metadata: { page, pageSize: skip || pageSize, total: totalCount },
+          metadata: { page, pageSize, total: totalCount },
         }),
       };
     } catch (error) {
@@ -165,8 +166,9 @@ export default class OrdersHandler {
   ): Promise<APIGatewayProxyResult> {
     const db = await OrdersHandler.connectDB();
     try {
-      const page = parseInt(event.queryStringParameters?.page, 10) | 1;
-      const pageSize = parseInt(event.queryStringParameters?.pageSize, 10) | 10;
+      const page = parseInt(event.queryStringParameters?.page, 10) || 1;
+      const pageSize =
+        parseInt(event.queryStringParameters?.pageSize, 10) || 10;
 
       const skip = (page - 1) * pageSize;
       const filter = {
@@ -187,7 +189,7 @@ export default class OrdersHandler {
         statusCode: 200,
         body: JSON.stringify({
           data: orders,
-          metadata: { page, pageSize: skip || pageSize, total: totalCount },
+          metadata: { page, pageSize, total: totalCount },
         }),
       };
     } catch (error) {

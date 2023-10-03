@@ -108,7 +108,7 @@ export default class WarehouseHandler {
     try {
       const page = parseInt(event.queryStringParameters?.page, 10) || 1;
       const pageSize =
-        parseInt(event.queryStringParameters?.pageSize, 10) || 10; // Changed from 'page' to 'pageSize'
+        parseInt(event.queryStringParameters?.pageSize, 10) || 10;
 
       const skip = (page - 1) * pageSize;
 
@@ -144,7 +144,7 @@ export default class WarehouseHandler {
     try {
       const page = parseInt(event.queryStringParameters?.page, 10) || 1;
       const pageSize =
-        parseInt(event.queryStringParameters?.pageSize, 10) || 10; // Changed from 'page' to 'pageSize'
+        parseInt(event.queryStringParameters?.pageSize, 10) || 10;
 
       const skip = (page - 1) * pageSize;
 
