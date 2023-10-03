@@ -120,12 +120,13 @@ export default class WarehouseHandler {
         .toArray();
 
       const ingredients = results as unknown as Warehouse[];
+      const totalCount = await db.collection("warehouse").countDocuments();
 
       return {
         statusCode: 200,
         body: JSON.stringify({
           data: ingredients,
-          metadata: { page, pageSize },
+          metadata: { page, pageSize, total: totalCount },
         }),
       };
     } catch (error) {
@@ -155,12 +156,15 @@ export default class WarehouseHandler {
         .toArray();
 
       const ingredients = results as unknown as PurchasedIngredients[];
+      const totalCount = await db
+        .collection("purchasedIngredients")
+        .countDocuments();
 
       return {
         statusCode: 200,
         body: JSON.stringify({
           data: ingredients,
-          metadata: { page, pageSize },
+          metadata: { page, pageSize, total: totalCount },
         }),
       };
     } catch (error) {

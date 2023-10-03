@@ -143,12 +143,13 @@ export default class OrdersHandler {
         .toArray();
 
       const orders = results as unknown as Order[];
+      const totalCount = await db.collection("orders").countDocuments();
 
       return {
         statusCode: 200,
         body: JSON.stringify({
           data: orders,
-          metadata: { page, pageSize: skip || pageSize },
+          metadata: { page, pageSize: skip || pageSize, total: totalCount },
         }),
       };
     } catch (error) {
@@ -180,12 +181,13 @@ export default class OrdersHandler {
         .toArray();
 
       const orders = results as unknown as Order[];
+      const totalCount = await db.collection("orders").countDocuments();
 
       return {
         statusCode: 200,
         body: JSON.stringify({
           data: orders,
-          metadata: { page, pageSize: skip || pageSize },
+          metadata: { page, pageSize: skip || pageSize, total: totalCount },
         }),
       };
     } catch (error) {
