@@ -185,7 +185,7 @@ export default class OrdersHandler {
         .toArray();
 
       const orders = results as unknown as Order[];
-      const totalCount = await db.collection("orders").countDocuments();
+      const totalCount = await db.collection("orders").countDocuments(filter);
 
       return {
         statusCode: 200,
