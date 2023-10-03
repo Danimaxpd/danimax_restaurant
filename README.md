@@ -105,10 +105,10 @@ Updated deployment bucket public access block
 ✔ Service deployed to stack restaurantMicroservices-dev (79s)
 
 endpoints:
-  POST - https://bqgjsk3aw5.execute-api.us-east-1.amazonaws.com/dev/v1/orders
-  POST - https://bqgjsk3aw5.execute-api.us-east-1.amazonaws.com/dev/v1/re_process_order
-  GET - https://bqgjsk3aw5.execute-api.us-east-1.amazonaws.com/dev/v1/orders
-  GET - https://bqgjsk3aw5.execute-api.us-east-1.amazonaws.com/dev/v1/orders/current
+  POST - https://sk3aw5.execute-api.us-east-1.amazonaws.com/dev/v1/orders
+  POST - https://jsk3aw5.execute-api.us-east-1.amazonaws.com/dev/v1/re_process_order
+  GET - https://qk3aw5.execute-api.us-east-1.amazonaws.com/dev/v1/orders
+  GET - https://k3aw5.execute-api.us-east-1.amazonaws.com/dev/v1/orders/current
 functions:
   kitchenOrders: restaurantMicroservices-dev-kitchenOrders (65 MB)
   kitchenReProcessOrder: restaurantMicroservices-dev-kitchenReProcessOrder (65 MB)
@@ -116,8 +116,8 @@ functions:
   kitchenListCurrentOrders: restaurantMicroservices-dev-kitchenListCurrentOrders (65 MB)
   kitchenCookWorker: restaurantMicroservices-dev-kitchenCookWorker (65 MB)
   warehouseWorker: restaurantMicroservices-dev-warehouseWorker (65 MB)
-kitchenCook: https://sqs.us-east-1.amazonaws.com/825487335500/restaurantMicroservices-dev-kitchenCook
-warehouse: https://sqs.us-east-1.amazonaws.com/825487335500/restaurantMicroservices-dev-warehouse
+kitchenCook: https://sqs.us-east-1.amazonaws.com/824500/restaurantMicroservices-dev-kitchenCook
+warehouse: https://sqs.us-east-1.amazonaws.com/82548700/restaurantMicroservices-dev-warehouse
 ```
 
 _Note_: In current form, after deployment, your API is public and can be invoked by anyone. For production deployments, you might want to configure an authorizer. For details on how to do that, refer to [`httpApi` event docs](https://www.serverless.com/framework/docs/providers/aws/events/http-api/).
