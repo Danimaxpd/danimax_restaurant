@@ -115,6 +115,7 @@ export default class WarehouseHandler {
       const results = await db
         .collection("warehouse")
         .find()
+        .sort({ updateDate: -1 })
         .skip(skip)
         .limit(pageSize)
         .toArray();
@@ -151,6 +152,7 @@ export default class WarehouseHandler {
       const results = await db
         .collection("purchasedIngredients")
         .find()
+        .sort({ updateDate: -1 })
         .skip(skip)
         .limit(pageSize)
         .toArray();

@@ -139,6 +139,7 @@ export default class OrdersHandler {
       const results = await db
         .collection("orders")
         .find()
+        .sort({ updateDate: -1 })
         .skip(skip)
         .limit(pageSize)
         .toArray();
@@ -178,6 +179,7 @@ export default class OrdersHandler {
       const results = await db
         .collection("orders")
         .find(filter)
+        .sort({ updateDate: -1 })
         .skip(skip)
         .limit(pageSize)
         .toArray();
